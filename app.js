@@ -22,7 +22,7 @@ const userRoutes = require("./routes/users.js")
 const campgroundRoutes = require("./routes/campground.js")
 const reviewRoutes = require("./routes/reviews.js")
 
-const dbUrl = "mongodb://127.0.0.1:27017/yelp-camp"
+const dbUrl = process.env.DB_URL || "mongodb://127.0.0.1:27017/yelp-camp"
 
 main().catch(err => console.log(err))
 
@@ -45,10 +45,12 @@ app.use(
   })
 )
 
+const secret = process.env.SECRET || "thisshouldbeabettersecret"
+
 app.use(
   session({
     name: "session",
-    secret: "thisshouldbeabettersecret",
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -61,7 +63,7 @@ app.use(
       mongoUrl: dbUrl,
       touchAfter: 24 * 60 * 60, // unnucessary updates when the data in the session has not changed
       crypto: {
-        secret: "thisshouldbeabettersecret",
+        secret,
       },
     }).on("error", e => {
       console.log("SESSION STORE ERROR", e)
@@ -161,6 +163,8 @@ app.use((err, req, res, next) => {
   res.status(statusCode).render("error", { err })
 })
 
-app.listen(3000, () => {
-  console.log("LISTENING ON PORT 3000")
+const port = process.env.PORT || 3000
+
+app.listen(port, () => {
+  console.log(`SERVING ON PORT ${port}`)
 })
