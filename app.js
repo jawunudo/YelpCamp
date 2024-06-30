@@ -16,15 +16,18 @@ const passportLocal = require("passport-local")
 const User = require("./models/user.js")
 const mongoSanitize = require("express-mongo-sanitize")
 const helmet = require("helmet")
+const MongoStore = require("connect-mongo")
 
 const userRoutes = require("./routes/users.js")
 const campgroundRoutes = require("./routes/campground.js")
 const reviewRoutes = require("./routes/reviews.js")
 
+const dbUrl = "mongodb://127.0.0.1:27017/yelp-camp"
+
 main().catch(err => console.log(err))
 
 async function main() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/yelp-camp").then(() => {
+  await mongoose.connect(dbUrl).then(() => {
     console.log("Mongo connected")
   })
 }
@@ -36,7 +39,11 @@ app.engine("ejs", ejsMate)
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride("_method"))
 app.use(express.static(path.join(__dirname, "public")))
-// app.use(mongoSanitize())
+app.use(
+  mongoSanitize({
+    replaceWith: "_",
+  })
+)
 
 app.use(
   session({
@@ -50,6 +57,15 @@ app.use(
       expires: Date.now() + 604800000,
       maxAge: 604800000,
     },
+    store: MongoStore.create({
+      mongoUrl: dbUrl,
+      touchAfter: 24 * 60 * 60, // unnucessary updates when the data in the session has not changed
+      crypto: {
+        secret: "thisshouldbeabettersecret",
+      },
+    }).on("error", e => {
+      console.log("SESSION STORE ERROR", e)
+    }),
   })
 )
 app.use(flash())
