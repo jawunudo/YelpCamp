@@ -77,7 +77,7 @@ const styleSrcUrls = [
   "https://use.fontawesome.com/",
   "https://cdn.jsdelivr.net",
   "https://res.cloudinary.com/dledbsdis/",
-  "https://cdn.maptiler.com/", // add this
+  "https://cdn.maptiler.com/",
 ]
 const connectSrcUrls = [
   "https://api.maptiler.com/",
