@@ -130,21 +130,21 @@ app.use(
 )
 
 app.use((req, res, next) => {
-  console.log(req.query)
+  // console.log(req.query)
   res.locals.currentUser = req.user
   res.locals.success = req.flash("success")
   res.locals.error = req.flash("error")
   next()
 })
 
-app.get("/fakeuser", async (req, res) => {
-  const user = await new User({
-    email: "jay@jaymail.com",
-    username: "JaYYY",
-  })
-  const newUser = await User.register(user, "papoose")
-  res.send(newUser)
-})
+// app.get("/fakeuser", async (req, res) => {
+//   const user = await new User({
+//     email: "jay@jaymail.com",
+//     username: "JaYYY",
+//   })
+//   const newUser = await User.register(user, "papoose")
+//   res.send(newUser)
+// })
 
 app.use("/", userRoutes)
 app.use("/campgrounds", campgroundRoutes)

@@ -25,7 +25,7 @@ module.exports.createCampground = async (req, res, next) => {
   }))
   campground.author = req.user._id
   await campground.save()
-  console.log(campground)
+  // console.log(campground)
   req.flash("success", "Successfully created a new campground")
   res.redirect(`/campgrounds/${campground._id}`)
 }
@@ -42,7 +42,7 @@ module.exports.showCampground = async (req, res, next) => {
     req.flash("error", "Cannot find campground!")
     return res.redirect("/campgrounds")
   }
-  console.log(campground)
+  // console.log(campground)
   res.render("campgrounds/campground", { campground })
 }
 
@@ -80,7 +80,7 @@ module.exports.editCampground = async (req, res, next) => {
     await campground.updateOne({
       $pull: { images: { filename: { $in: req.body.deleteImages } } },
     })
-    console.log(campground)
+    // console.log(campground)
   }
   req.flash("success", "Successfully updated campground")
   res.redirect(`/campgrounds/${campground._id}`)
