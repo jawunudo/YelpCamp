@@ -4,6 +4,7 @@ if (process.env.NODE_ENV !== "production") {
 
 const express = require("express")
 const app = express()
+const port = process.env.PORT || 3000
 const path = require("path")
 const ejsMate = require("ejs-mate")
 const session = require("express-session")
@@ -162,8 +163,6 @@ app.use((err, req, res, next) => {
   if (!err.message) err.message = "Oh No, Something went wrong."
   res.status(statusCode).render("error", { err })
 })
-
-const port = process.env.PORT || 3000
 
 app.listen(port, () => {
   console.log(`SERVING ON PORT ${port}`)
