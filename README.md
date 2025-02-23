@@ -1,0 +1,1 @@
+A Readme is very important because it explains the webapp or website, finctionalities, technologies used and why the developer chose to use those technologies and all other information that users or other devs who clone or have a look at the repo will find useful.
